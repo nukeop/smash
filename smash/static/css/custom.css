@@ -7,7 +7,7 @@ html, body {
 }
 
 .content {
-  min-height: 80vh;
+  min-height: 100%;
   position: relative;
 }
 
@@ -48,9 +48,11 @@ html, body {
   background-color: #212121;
   box-shadow: 0 -2px 10px 0px rgba(33, 33, 33, 0.85);
   position: absolute;
+  padding: 0;
+  margin-top: 50px;
   right: 0;
-  bottom: 0;
   left: 0;
+  bottom: 0;
 }
 
 .footer-copyright {
@@ -75,4 +77,19 @@ html, body {
 
 .rate-negative {
   color: #f44336;
+}
+
+.table-separator{
+  background-color: #03A9F4;
+  padding: 0!important;
+  width: 3px;
+  height: 100%;
+}
+
+.table{
+  height: 100%;
+}
+
+.table > tbody > tr > td{
+  border-top: 0;
 }

@@ -15,7 +15,7 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" style="height:50%">
       <nav class="navbar navbar-default navbar-upper">
         <div class="navbar-header">
           <a class="navbar-brand navbar-brand-upper" href="">{{ appbrand }}</a>
@@ -32,17 +32,19 @@
 
 
       <div class="content">
+
         {% block content %}
 
         {% endblock %}
-      </div>
-    </div>
 
-    <footer class="footer container">
-      <div class="footer-copyright">
-        Copyright © Lord Gumblert Productions 2016
+        <footer class="footer">
+          <div class="footer-copyright">
+            Copyright © Lord Gumblert Productions 2016
+          </div>
+        </footer>
       </div>
-    </footer>
+
+    </div>
 
   </body>
 

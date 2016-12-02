@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template
 
 from smash import app, conf, db
@@ -5,12 +6,21 @@ from smash import app, conf, db
 
 @app.route('/')
 def index():
+
+    welcome = "<p>Welcome to the quote archive.</p>"
+    news = ("<p><b>02/12/2016{}</b></p><h4>{} running on smash quote database"
+            " engine launched today</h4>").format(
+                datetime.datetime.now().strftime("%d/%m/%y"),
+                conf.config['APPNAME']
+            )
+
     return render_template(
         "index.html",
         appname=conf.config['APPNAME'],
         appbrand=conf.config['APPBRAND'],
         title="Quotes",
-        msg="Landing page!"
+        welcometext=welcome,
+        newstext=news
     )
 
 

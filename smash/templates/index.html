@@ -1,4 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-{{ msg }}
+
+<table class="table">
+  <tr>
+    <td>
+      {{ welcometext|safe }}
+    </td>
+
+    <td class="table-separator">
+    </td>
+
+    <td>
+      {{ newstext|safe }}
+    </td>
+  </tr>
+</table>
+
+{{ msg|safe }}
 {% endblock %}
