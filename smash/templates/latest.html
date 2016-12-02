@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if quotes  %}
+{% for quote in quotes %}
+<a class="quote-link" href="quote/{{ quote[0] }}">#{{ quote[0] }}</a>
+<a class="rate-positive">+</a> ({{quote[1]}}) <a class="rate-negative">-</a></br>
+<div class="quote">
+  {{ quote[2]|safe  }}</br></br></br>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

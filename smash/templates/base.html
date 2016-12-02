@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fonts.css') }}" />
+
+    {% endblock %}
+
+    {% if title %}
+        <title>{{ title }} - {{ appname }}</title>
+    {% endif %}
+  </head>
+
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-default navbar-upper">
+        <div class="navbar-header">
+          <a class="navbar-brand navbar-brand-upper" href="">smash</a>
+        </div>
+      </nav>
+      <nav class="navbar navbar-static-top navbar-lower">
+
+        <ul class="nav navbar-nav">
+          <li> <a href="/">Home</a> </li>
+          <li> <a href="/latest">Latest</a> </li>
+          <li> <a href="/tags">Tags</a> </li>
+        </ul>
+      </nav>
+
+
+      <div class="content">
+        {% block content %}
+
+        {% endblock %}
+      </div>
+    </div>
+
+    <footer class="footer container">
+      <div class="footer-copyright">
+        Copyright © Lord Gumblert Productions 2016
+      </div>
+    </footer>
+
+  </body>
+
+</html>
