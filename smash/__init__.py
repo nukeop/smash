@@ -11,6 +11,18 @@ conf = config.Config('config.json')
 if 'HEROKU' in os.environ:
     conf.add(('HEROKU', 1))
 
+# Load app name from environment if it's not in the config
+if ('APPNAME' in conf.config and
+    conf.config['APPNAME']=="" and
+    'APPNAME' in os.environ):
+    conf.add(('APPNAME', os.environ['APPNAME']))
+
+# Load app brand name from environment if it's not in the config
+if ('APPBRAND' in conf.config and
+    conf.config['APPBRAND']=="" and
+    'APPBRAND' in os.environ):
+    conf.add(('APPBRAND', os.environ['APPBRAND']))
+
 db = database.Database(conf.config["DBNAME"])
 models.init_models(db)
 

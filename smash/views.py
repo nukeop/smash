@@ -7,7 +7,8 @@ from smash import app, conf, db
 def index():
     return render_template(
         "index.html",
-        appname=conf.config["APPNAME"],
+        appname=conf.config['APPNAME'],
+        appbrand=conf.config['APPBRAND'],
         title="Quotes",
         msg="Landing page!"
     )
@@ -20,7 +21,8 @@ def latest():
 
     return render_template(
         "latest.html",
-        appname=conf.config["APPNAME"],
+        appname=conf.config['APPNAME'],
+        appbrand=conf.config['APPBRAND'],
         title="Latest",
         quotes=quotes
     )
@@ -41,7 +43,8 @@ def quote(id):
         ]
         return render_template(
         "latest.html",
-        appname=conf.config["APPNAME"],
+        appname=conf.config['APPNAME'],
+        appbrand=conf.config['APPBRAND'],
         title="Latest",
         quotes=quote
     )
@@ -51,6 +54,7 @@ def quote(id):
 def tags():
     return render_template(
         "tags.html",
-        appname=conf.config["APPNAME"],
+        appname=conf.config['APPNAME'],
+        appbrand=conf.config['APPBRAND'],
         title="Tags"
     )
