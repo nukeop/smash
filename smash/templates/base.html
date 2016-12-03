@@ -3,7 +3,8 @@
   <head>
     {% block head %}
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" />
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" />
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fonts.css') }}" />
 
@@ -27,6 +28,19 @@
           <li> <a href="/">Home</a> </li>
           <li> <a href="/latest">Latest</a> </li>
           <li> <a href="/tags">Tags</a> </li>
+          <li> <a href="/tags">Add new</a> </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+              <form class="navbar-form navbar-left" role="search">
+                  <div class="form-group">
+                      <input type="search" class="form-control" placeholder="Search">
+                  </div>
+              </form>
+            </li>
+            <li> <a href="/tags"><i class="fa fa-search" aria-hidden="true"></i>
+</a> </li>
         </ul>
       </nav>
 

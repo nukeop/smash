@@ -26,6 +26,7 @@ html, body {
   padding: 0px;
   padding-left: 5px;
   line-height: 25px;
+  text-shadow: -2px 2px 2px rgba(33, 33, 33, 0.85);
 }
 
 .navbar-lower{
@@ -42,6 +43,34 @@ html, body {
 
 .nav > li > a:hover{
   background-color: #424242;
+}
+
+.navbar-right{
+    margin: 0;
+}
+
+.navbar-form {
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+
+.navbar-form > .form-group{
+    height: 100%;
+}
+
+.navbar-form > .form-group > .form-control {
+    border-radius: 0px;
+    border: 0;
+    border-bottom: 2px solid #FAFAFA;
+    background-color: inherit;
+    height: 100%;
+    color: #FAFAFA
+}
+
+.navbar-form > .form-group > .form-control:focus {
+    box-shadow: none;
+    border-bottom: 2px solid #03A9F4;
 }
 
 .footer {
