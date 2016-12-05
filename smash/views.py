@@ -8,7 +8,7 @@ from smash import app, conf, db
 def index():
 
     welcome = "<p>Welcome to the quote archive.</p>"
-    news = ("<p><b>02/12/2016{}</b></p><h4>{} running on smash quote database"
+    news = ("<p><b>{}</b></p><h4>{} running on smash quote database"
             " engine launched today</h4>").format(
                 datetime.datetime.now().strftime("%d/%m/%y"),
                 conf.config['APPNAME']
@@ -68,3 +68,8 @@ def tags():
         appbrand=conf.config['APPBRAND'],
         title="Tags"
     )
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    pass
