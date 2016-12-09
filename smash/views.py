@@ -1,6 +1,7 @@
 import datetime
 import logging
-from flask import render_template, Markup
+import sqlite3
+from flask import render_template, Markup, request, abort
 
 from smash import app, conf, db
 
@@ -86,3 +87,51 @@ def search():
         return 'success'
     else:
         return 'Invalid request.'
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_new():
+    if request.method == 'POST':
+        if request.form['submit'] == "Submit":
+            quote_body = request.form["newquote"]
+            quote_tags = request.form["tags"].split(',')
+
+            cur = db.insert("quotes", "rating, content", "?, ?", (0, quote_body) )
+            qid = cur.lastrowid
+
+            for tag in quote_tags:
+                tid = -1
+                try:
+                    cur = db.insert(
+                        "tags",
+                        "name",
+                        "?",
+                        (tag,)
+                    )
+                    tid = cur.lastrowid
+                except sqlite3.IntegrityError:
+                    logger.warning("Tag {} already exists".format(tag))
+
+                if tid != -1:
+                    try:
+                        db.insert(
+                            "tagsToQuotes",
+                            "tagid, quoteid",
+                            "?, ?",
+                            (tid, qid)
+                        )
+                    except sqlite3.Error:
+                        logger.warning("Database error while inserting into tagsToQuotes")
+
+        elif request.form['submit'] == "Preview":
+            return str(request.form)
+        else:
+            abort(501)
+
+    elif request.method == 'GET':
+        return render_template(
+            "add.html",
+            appname=conf.config['APPNAME'],
+            appbrand=conf.config['APPBRAND'],
+            title="Add new"
+        )

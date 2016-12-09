@@ -20,7 +20,7 @@ class Tag(Model):
     tablename = "tags"
 
     id = ("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT")
-    name = ("name", "TEXT", "NOT NULL")
+    name = ("name", "TEXT", "UNIQUE NOT NULL")
 
 
 class TagsToQuotes(Model):

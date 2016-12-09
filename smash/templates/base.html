@@ -7,6 +7,7 @@
       <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fonts.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-tagsinput.css') }}" />
 
     {% endblock %}
 
@@ -28,8 +29,9 @@
           <li> <a href="/">Home</a> </li>
           <li> <a href="/latest">Latest</a> </li>
           <li> <a href="/tags">Tags</a> </li>
-          <li> <a href="/tags">Add new</a> </li>
+          <li> <a href="/add">Add new</a> </li>
         </ul>
+
 
         <ul class="nav navbar-nav navbar-right">
             <li>
@@ -60,6 +62,9 @@
 
     </div>
 
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-tagsinput.min.js') }}"></script>
   </body>
 
 </html>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<center>
+<form action="/add" name="add" method="post">
+    <table width="60%">
+        <tbody>
+            <tr>
+                <td>
+                </br>
+                    <textarea class="form-control" rows="10" name="newquote"></textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                </br>
+                <label for="tags" >Tags:</label>
+                <input class="form-control" type="text" name="tags" id="tags" value="" data-role="tagsinput" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                </br>
+                    <input type="submit" name="submit" value="Preview" class="btn btn-default"></input>
+                    <input type="submit" name="submit" value="Submit" class="btn btn-default"></input>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                </br>
+                IP and connection time are logged.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+</center>
+
+{% endblock %}

@@ -85,7 +85,7 @@ html, body {
   margin-top: 50px;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: -50px;
 }
 
 .footer-copyright {
@@ -125,4 +125,12 @@ html, body {
 
 .table > tbody > tr > td{
   border-top: 0;
+}
+
+.tags {
+  margin-bottom: 4px;
+}
+
+.badge {
+    background-color: #03A9F4;
 }

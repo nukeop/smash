@@ -45,6 +45,7 @@ class Database(object):
         query = "INSERT INTO {}({}) VALUES ({})".format(table, columns, values)
         cur.execute(query, params)
         conn.commit()
+        return cur
 
 
     def delete(self, table, condition):
