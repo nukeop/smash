@@ -14,6 +14,7 @@ class Quote(Model):
     id = ("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT")
     rating = ("rating", "INTEGER", "NOT NULL")
     content = ("content", "TEXT", "NOT NULL")
+    approved = ("approved", "BOOLEAN", "NOT NULL")
 
 
 class Tag(Model):

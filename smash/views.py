@@ -30,15 +30,32 @@ def index():
 
 @app.route('/latest')
 def latest():
-    quotes = reversed(db.select("quotes", "id, rating, content"))
-    quotes = [(q[0], q[1], bytes(Markup.escape(q[2]), 'utf-8').decode('utf-8').replace('\n', '</br>')) for q in quotes]
+    quotes = reversed(db.select("quotes", "id, rating, content", "approved"))
+    quotes = [(q[0], q[1], unicode(Markup.escape(q[2])).replace('\n', '</br>')) for q in quotes]
+
+    quotes_tags = []
+
+    for quote in quotes:
+        tags = db.select("tagsToQuotes", "tagid", "quoteid='{}'".format(quote[0]))
+        tags_str = []
+        for tag in tags:
+            tags_str.append(db.select("tags", "name", "id='{}'".format(tag[0]))[0][0])
+
+        quotes_tags.append(
+            (
+                quote[0],
+                quote[1],
+                quote[2],
+                tags_str
+            )
+        )
 
     return render_template(
         "latest.html",
         appname=conf.config['APPNAME'],
         appbrand=conf.config['APPBRAND'],
         title="Latest",
-        quotes=quotes
+        quotes=quotes_tags
     )
 
 
@@ -46,7 +63,11 @@ def latest():
 def quote(id):
     quote = db.select("quotes", "id, rating, content", "id='{}'".format(id))
     if len(quote)<1:
-        return "No such quote."
+        return render_template(
+            "message.html",
+            alertclass="alert-warning",
+            message="No such quote."
+        )
     else:
 
         tags = db.select("tagsToQuotes", "tagid", "quoteid='{}'".format(quote[0][0]))
@@ -58,17 +79,17 @@ def quote(id):
             (
                 quote[0][0],
                 quote[0][1],
-                bytes(Markup.escape(quote[0][2]), 'utf-8').decode('utf-8').replace('\n', '</br>'),
+                unicode(Markup.escape(quote[0][2])).replace('\n', '</br>'),
                 tags_str
             )
         ]
         return render_template(
-        "latest.html",
-        appname=conf.config['APPNAME'],
-        appbrand=conf.config['APPBRAND'],
-        title="Latest",
-        quotes=quote
-    )
+            "latest.html",
+            appname=conf.config['APPNAME'],
+            appbrand=conf.config['APPBRAND'],
+            title="Latest",
+            quotes=quote
+        )
 
 
 @app.route('/tags')
@@ -84,7 +105,11 @@ def tags():
 @app.route('/search', methods=['POST'])
 def search():
     if request.method == 'POST':
-        return 'success'
+        return render_template(
+            "message.html",
+            alertclass="alert-warning",
+            message="Not implemented yet. "
+        )
     else:
         return 'Invalid request.'
 
@@ -96,7 +121,12 @@ def add_new():
             quote_body = request.form["newquote"]
             quote_tags = request.form["tags"].split(',')
 
-            cur = db.insert("quotes", "rating, content", "?, ?", (0, quote_body) )
+            cur = db.insert(
+                "quotes",
+                "rating, content, approved",
+                "?, ?, ?",
+                (0, quote_body, 0)
+            )
             qid = cur.lastrowid
 
             for tag in quote_tags:
@@ -122,6 +152,16 @@ def add_new():
                         )
                     except sqlite3.Error:
                         logger.warning("Database error while inserting into tagsToQuotes")
+                        return render_template(
+                            "message.html",
+                            alertclass="alert-danger",
+                            message="Could not add your quote. Try again later."
+                        )
+            return render_template(
+                "message.html",
+                alertclass="alert-success",
+                message="Quote added succesfully. It will need to be reviewed by the administrators before it shows up."
+            )
 
         elif request.form['submit'] == "Preview":
             return str(request.form)
