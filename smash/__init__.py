@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from . import config, database, log, models
+from . import config, database_postgresql, log, models
 
 
 log.configure_logging()
@@ -36,7 +36,7 @@ if 'SECRETKEY' in conf.config:
 else:
     exit("Secret key not set.")
 
-db = database.Database(conf.config["DBNAME"])
+db = database_postgresql.PostgreSQL(conf.config["DBNAME"])
 models.init_models(db)
 
 

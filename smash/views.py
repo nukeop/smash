@@ -1,6 +1,6 @@
 import datetime
 import logging
-import sqlite3
+import psycopg2
 from flask import render_template, Markup, request, abort, session
 
 from smash import app, conf, db
@@ -155,7 +155,7 @@ def add_new():
                         (tag,)
                     )
                     tid = cur.lastrowid
-                except sqlite3.IntegrityError:
+                except psycopg2.IntegrityError:
                     logger.warning("Tag {} already exists".format(tag))
 
                 if tid != -1:
@@ -166,7 +166,7 @@ def add_new():
                             "?, ?",
                             (tid, qid)
                         )
-                    except sqlite3.Error:
+                    except psycopg2.Error:
                         logger.warning("Database error while inserting into tagsToQuotes")
                         return render_template(
                             "message.html",

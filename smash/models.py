@@ -1,5 +1,3 @@
-import sqlite3
-
 class Model(object):
     #Name of the table to be created
     tablename = "abstractmodel"

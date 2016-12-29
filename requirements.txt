@@ -1,2 +1,3 @@
 flask
 mock
+psycopg2
