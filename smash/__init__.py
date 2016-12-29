@@ -23,6 +23,12 @@ if ('APPBRAND' in conf.config and
     'APPBRAND' in os.environ):
     conf.add(('APPBRAND', os.environ['APPBRAND']))
 
+# Set the secret key
+if 'SECRETKEY' in conf.config:
+    app.secret_key = conf.config['SECRETKEY']
+else:
+    exit("Secret key not set.")
+
 db = database.Database(conf.config["DBNAME"])
 models.init_models(db)
 

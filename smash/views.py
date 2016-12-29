@@ -1,7 +1,7 @@
 import datetime
 import logging
 import sqlite3
-from flask import render_template, Markup, request, abort
+from flask import render_template, Markup, request, abort, session
 
 from smash import app, conf, db
 
@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 @app.route('/')
 def index():
-
     welcome = "<p>Welcome to the quote archive.</p>"
     news = ("<p><b>{}</b></p><h4>{} running on smash quote database"
             " engine launched today</h4>").format(
@@ -25,6 +24,20 @@ def index():
         title="Quotes",
         welcometext=welcome,
         newstext=news
+    )
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    if request.method == 'POST':
+        if request.form["secret"] == conf.config['ADMINSECRET']:
+            session['authorized'] = True
+
+    return render_template(
+        "login.html",
+        authorized=session.get('authorized', None),
+        appname=conf.config['APPNAME'],
+        appbrand=conf.config['APPBRAND']
     )
 
 
@@ -94,11 +107,14 @@ def quote(id):
 
 @app.route('/tags')
 def tags():
+    tags = [x[0] for x in db.select("tags", "name")]
+
     return render_template(
         "tags.html",
         appname=conf.config['APPNAME'],
         appbrand=conf.config['APPBRAND'],
-        title="Tags"
+        title="Tags",
+        tags=tags
     )
 
 
@@ -123,9 +139,9 @@ def add_new():
 
             cur = db.insert(
                 "quotes",
-                "rating, content, approved",
-                "?, ?, ?",
-                (0, quote_body, 0)
+                "rating, content, approved, author_ip, time",
+                "?, ?, ?, ?, ?",
+                (0, quote_body, 0, request.remote_addr, datetime.datetime.now().strftime("%H:%M:%S %d/%m/%y"),)
             )
             qid = cur.lastrowid
 

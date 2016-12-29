@@ -1,5 +1,7 @@
 {
-    "APPNAME": "",
     "APPBRAND": "",
-    "DBNAME": "smash.db"
+    "APPNAME": "",
+    "DBNAME": "smash.db",
+    "SECRETKEY": "",
+    "ADMINSECRET": ""
 }

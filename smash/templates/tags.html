@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-Page with all tags
+
+{% for tag in tags %}
+  <a class="badge">{{tag}}</a><br />
+{% endfor %}
+
 {% endblock %}

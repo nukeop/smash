@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if authorized %}
+
+<center>
+  <h3><br />Authorization key accepted<br /><br />Access granted</h3>
+</center>
+
+{% else %}
+
+<center>
+  <form action="/login" name="secret" method="post">
+    <label for="secret">Enter authorization key:</label>
+    <input type="password" name="secret"></input>
+  </form>
+</center>
+
+{% endif %}
+
+{% endblock %}

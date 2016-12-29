@@ -15,6 +15,8 @@ class Quote(Model):
     rating = ("rating", "INTEGER", "NOT NULL")
     content = ("content", "TEXT", "NOT NULL")
     approved = ("approved", "BOOLEAN", "NOT NULL")
+    author_ip = ("author_ip", "TEXT", "NOT NULL")
+    time = ("time", "TEXT", "NOT NULL")
 
 
 class Tag(Model):
