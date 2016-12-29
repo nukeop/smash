@@ -36,7 +36,7 @@ if 'SECRETKEY' in conf.config:
 else:
     exit("Secret key not set.")
 
-db = database_postgresql.PostgreSQL(conf.config["DBNAME"])
+db = database_postgresql.DatabasePostgreSQL()
 models.init_models(db)
 
 
