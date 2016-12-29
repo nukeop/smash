@@ -23,6 +23,13 @@ if ('APPBRAND' in conf.config and
     'APPBRAND' in os.environ):
     conf.add(('APPBRAND', os.environ['APPBRAND']))
 
+# Load admin key and secret key from environment
+if 'ADMINSECRET' in os.environ:
+    conf.add(('ADMINSECRET', os.environ['ADMINSECRET']))
+
+if 'SECRETKEY' in os.environ:
+    conf.add(('SECRETKEY', os.environ['SECRETKEY']))
+
 # Set the secret key
 if 'SECRETKEY' in conf.config:
     app.secret_key = conf.config['SECRETKEY']
