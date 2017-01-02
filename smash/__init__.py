@@ -1,11 +1,15 @@
 import os
 from flask import Flask
-from . import config, database_postgresql, log, models
+from flask.ext.sqlalchemy import SQLAlchemy
+from . import config, database_sqlalchemy, log, models
 
 
 log.configure_logging()
 app = Flask(__name__)
 conf = config.Config('config.json')
+
+# Load database URL for SQLAlchemy from environment
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 # This flag tells the program it's deployed on heroku
 if 'HEROKU' in os.environ:
@@ -36,8 +40,13 @@ if 'SECRETKEY' in conf.config:
 else:
     exit("Secret key not set.")
 
-db = database_postgresql.DatabasePostgreSQL()
-models.init_models(db)
+db = SQLAlchemy(app)
+
+from smash.models_sqlalchemy import *
+
+db.create_all()
+
+#models.init_models(db)
 
 
 from . import views

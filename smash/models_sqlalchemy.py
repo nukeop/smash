@@ -1,0 +1,38 @@
+from smash import db
+
+
+class Quote(db.Model):
+    __tablename__ = 'quotes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer)
+    content = db.Column(db.String())
+    approved = db.Column(db.Boolean)
+    author_ip = db.Column(db.String())
+    time = db.Column(db.String())
+
+
+    def __init__(self, content, author_ip, time):
+        self.rating = 0
+        self.content = content
+        self.approved = False
+        self.author_ip = author_ip
+        self.time = time
+
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+
+
+    def __init(self, name):
+        self.name = name
+
+
+tags_to_quotes = db.Table(
+    'tagsToQuotes',
+    db.Column('tagid', db.Integer, db.ForeignKey('tags.id')),
+    db.Column('quoteid', db.Integer, db.ForeignKey('quotes.id'))
+)

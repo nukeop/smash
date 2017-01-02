@@ -1,3 +1,4 @@
 flask
 mock
 psycopg2
+flask-sqlalchemy
