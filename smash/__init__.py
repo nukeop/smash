@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from . import config, database_sqlalchemy, log, models
+from . import config, log
 
 
 log.configure_logging()
@@ -45,8 +45,5 @@ db = SQLAlchemy(app)
 from smash.models_sqlalchemy import *
 
 db.create_all()
-
-#models.init_models(db)
-
 
 from . import views
