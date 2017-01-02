@@ -1,6 +1,13 @@
 from smash import db
 
 
+tags_to_quotes = db.Table(
+    'tagsToQuotes',
+    db.Column('tagid', db.Integer, db.ForeignKey('tags.id')),
+    db.Column('quoteid', db.Integer, db.ForeignKey('quotes.id'))
+)
+
+
 class Quote(db.Model):
     __tablename__ = 'quotes'
 
@@ -10,6 +17,11 @@ class Quote(db.Model):
     approved = db.Column(db.Boolean)
     author_ip = db.Column(db.String())
     time = db.Column(db.String())
+    tags = db.relationship(
+        'Tag',
+        secondary=tags_to_quotes,
+        backref=db.backref('quotes', lazy='dynamic')
+    )
 
 
     def __init__(self, content, author_ip, time):
@@ -27,12 +39,5 @@ class Tag(db.Model):
     name = db.Column(db.String())
 
 
-    def __init(self, name):
+    def __init__(self, name):
         self.name = name
-
-
-tags_to_quotes = db.Table(
-    'tagsToQuotes',
-    db.Column('tagid', db.Integer, db.ForeignKey('tags.id')),
-    db.Column('quoteid', db.Integer, db.ForeignKey('quotes.id'))
-)

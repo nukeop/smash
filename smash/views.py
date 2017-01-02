@@ -3,9 +3,14 @@ import logging
 import psycopg2
 from flask import render_template, Markup, request, abort, session
 
+from smash.models_sqlalchemy import *
 from smash import app, conf, db
 
 logger = logging.getLogger(__name__)
+
+
+def timestamp():
+    return datetime.datetime.now().strftime("%H:%M:%S %d/%m/%y")
 
 
 @app.route('/')
@@ -137,44 +142,18 @@ def add_new():
             quote_body = request.form["newquote"]
             quote_tags = request.form["tags"].split(',')
 
-            cur = db.insert(
-                "quotes",
-                "rating, content, approved, author_ip, time",
-                "?, ?, ?, ?, ?",
-                (0, quote_body, 0, request.remote_addr, datetime.datetime.now().strftime("%H:%M:%S %d/%m/%y"),)
-            )
-            qid = cur.lastrowid
+            quote = Quote(quote_body, request.remote_addr, timestamp())
+            quote_tags = [Tag(tag) for tag in quote_tags]
 
-            for tag in quote_tags:
-                tid = -1
-                try:
-                    cur = db.insert(
-                        "tags",
-                        "name",
-                        "?",
-                        (tag,)
-                    )
-                    tid = cur.lastrowid
-                except psycopg2.IntegrityError:
-                    logger.warning("Tag {} already exists".format(tag))
+            quote.tags.extend(quote_tags)
 
-                if tid != -1:
-                    try:
-                        db.insert(
-                            "tagsToQuotes",
-                            "tagid, quoteid",
-                            "?, ?",
-                            (tid, qid)
-                        )
-                    except psycopg2.Error:
-                        logger.warning("Database error while inserting into tagsToQuotes")
-                        return render_template(
-                            "message.html",
-                            alertclass="alert-danger",
-                            message="Could not add your quote. Try again later."
-                        )
+            db.session.add(quote)
+            db.session.commit()
+
             return render_template(
                 "message.html",
+                appname=conf.config['APPNAME'],
+                appbrand=conf.config['APPBRAND'],
                 alertclass="alert-success",
                 message="Quote added succesfully. It will need to be reviewed by the administrators before it shows up."
             )
