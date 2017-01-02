@@ -1,7 +1,7 @@
 import datetime
 import logging
 import psycopg2
-from flask import render_template, Markup, request, abort, session
+from flask import render_template, Markup, request, abort, session, g
 
 from smash.models_sqlalchemy import *
 from smash import app, conf, db
@@ -11,6 +11,12 @@ logger = logging.getLogger(__name__)
 
 def timestamp():
     return datetime.datetime.now().strftime("%H:%M:%S %d/%m/%y")
+
+
+@app.before_request
+def before_request():
+    g.appname = conf.config['APPNAME']
+    g.appbrand = conf.config['APPBRAND']
 
 
 @app.route('/')
@@ -24,8 +30,6 @@ def index():
 
     return render_template(
         "index.html",
-        appname=conf.config['APPNAME'],
-        appbrand=conf.config['APPBRAND'],
         title="Quotes",
         welcometext=welcome,
         newstext=news
@@ -40,9 +44,6 @@ def login_page():
 
     return render_template(
         "login.html",
-        authorized=session.get('authorized', None),
-        appname=conf.config['APPNAME'],
-        appbrand=conf.config['APPBRAND']
     )
 
 
@@ -56,9 +57,22 @@ def latest():
 
     return render_template(
         "latest.html",
-        appname=conf.config['APPNAME'],
-        appbrand=conf.config['APPBRAND'],
         title="Latest",
+        quotes=quotes
+    )
+
+
+@app.route('/queue')
+def queue():
+    quotes = Quote.query.filter_by(approved=False).order_by(Quote.id).all()
+
+    # Replace line breaks with html breaks and escape special characters
+    for quote in quotes:
+        quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
+
+    return render_template(
+        "queue.html",
+        title="Queue",
         quotes=quotes
     )
 
@@ -77,8 +91,6 @@ def quote(id):
         quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
         return render_template(
             "latest.html",
-            appname=conf.config['APPNAME'],
-            appbrand=conf.config['APPBRAND'],
             title="Quote #{}".format(quote.id),
             quotes=[quote,]
         )
@@ -86,12 +98,10 @@ def quote(id):
 
 @app.route('/tags')
 def tags():
-    tags = [x[0] for x in db.select("tags", "name")]
+    tags = Tag.query.order_by(Tag.name).all()
 
     return render_template(
         "tags.html",
-        appname=conf.config['APPNAME'],
-        appbrand=conf.config['APPBRAND'],
         title="Tags",
         tags=tags
     )
@@ -126,8 +136,6 @@ def add_new():
 
             return render_template(
                 "message.html",
-                appname=conf.config['APPNAME'],
-                appbrand=conf.config['APPBRAND'],
                 alertclass="alert-success",
                 message="Quote added succesfully. It will need to be reviewed by the administrators before it shows up."
             )
@@ -140,7 +148,5 @@ def add_new():
     elif request.method == 'GET':
         return render_template(
             "add.html",
-            appname=conf.config['APPNAME'],
-            appbrand=conf.config['APPBRAND'],
             title="Add new"
         )

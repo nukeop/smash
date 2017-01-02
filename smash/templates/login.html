@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if authorized %}
+{% if session.authorized %}
 
 <center>
   <h3><br />Authorization key accepted<br /><br />Access granted</h3>

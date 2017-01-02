@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if quotes  %}
+{% for quote in quotes %}
+<a class="quote-link" href="quote/{{ quote.id }}">#{{ quote.id }}</a>
+<a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a></br>
+<div class="quote">
+    <p>{{ quote.content|safe }}</p>
+</div>
+
+<div class="tags">
+
+    Tags:
+    {% for tag in quote.tags %}
+    <a href="tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
+    {% endfor %}
+
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

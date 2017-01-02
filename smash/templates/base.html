@@ -12,7 +12,7 @@
     {% endblock %}
 
     {% if title %}
-        <title>{{ title }} - {{ appname }}</title>
+        <title>{{ title }} - {{ g.appname }}</title>
     {% endif %}
   </head>
 
@@ -20,7 +20,7 @@
     <div class="container" style="height:50%">
       <nav class="navbar navbar-default navbar-upper">
         <div class="navbar-header">
-          <a class="navbar-brand navbar-brand-upper" href="">{{ appbrand }}</a>
+          <a class="navbar-brand navbar-brand-upper" href="">{{ g.appbrand }}</a>
         </div>
       </nav>
       <nav class="navbar navbar-static-top navbar-lower">
@@ -31,6 +31,9 @@
           <li> <a href="/tags">Tags</a> </li>
           <li> <a href="/add">Add new</a> </li>
           <li> <a href="/login">Log in</a> </li>
+          {% if session.authorized %}
+          <li> <a href="/queue">Queue</a> </li>
+          {% endif %}
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
