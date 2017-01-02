@@ -48,38 +48,24 @@ def login_page():
 
 @app.route('/latest')
 def latest():
-    quotes = reversed(db.select("quotes", "id, rating, content", "approved"))
-    quotes = [(q[0], q[1], unicode(Markup.escape(q[2])).replace('\n', '</br>')) for q in quotes]
+    quotes = Quote.query.filter_by(approved=True).order_by(Quote.id.desc()).all()
 
-    quotes_tags = []
-
+    # Replace line breaks with html breaks and escape special characters
     for quote in quotes:
-        tags = db.select("tagsToQuotes", "tagid", "quoteid='{}'".format(quote[0]))
-        tags_str = []
-        for tag in tags:
-            tags_str.append(db.select("tags", "name", "id='{}'".format(tag[0]))[0][0])
-
-        quotes_tags.append(
-            (
-                quote[0],
-                quote[1],
-                quote[2],
-                tags_str
-            )
-        )
+        quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
 
     return render_template(
         "latest.html",
         appname=conf.config['APPNAME'],
         appbrand=conf.config['APPBRAND'],
         title="Latest",
-        quotes=quotes_tags
+        quotes=quotes
     )
 
 
 @app.route('/quote/<int:id>')
 def quote(id):
-    quote = Quote.query.filter_by(id=id).first()
+    quote = Quote.query.filter_by(id=id, approved=True).first()
 
     if quote is None:
         return render_template(
@@ -88,6 +74,7 @@ def quote(id):
             message="No such quote."
         )
     else:
+        quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
         return render_template(
             "latest.html",
             appname=conf.config['APPNAME'],
