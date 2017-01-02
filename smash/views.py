@@ -66,15 +66,22 @@ def latest():
 def queue():
     quotes = Quote.query.filter_by(approved=False).order_by(Quote.id).all()
 
-    # Replace line breaks with html breaks and escape special characters
-    for quote in quotes:
-        quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
+    if len(quotes)>0:
+        # Replace line breaks with html breaks and escape special characters
+        for quote in quotes:
+            quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
 
-    return render_template(
-        "queue.html",
-        title="Queue",
-        quotes=quotes
-    )
+        return render_template(
+            "queue.html",
+            title="Queue",
+            quotes=quotes
+        )
+    else:
+        return render_template(
+            "message.html",
+            alertclass="alert-warning",
+            message="No quotes in the database. "
+        )
 
 
 @app.route('/quote/<int:id>')
