@@ -79,34 +79,21 @@ def latest():
 
 @app.route('/quote/<int:id>')
 def quote(id):
-    quote = db.select("quotes", "id, rating, content", "id='{}'".format(id))
-    if len(quote)<1:
+    quote = Quote.query.filter_by(id=id).first()
+
+    if quote is None:
         return render_template(
             "message.html",
             alertclass="alert-warning",
             message="No such quote."
         )
     else:
-
-        tags = db.select("tagsToQuotes", "tagid", "quoteid='{}'".format(quote[0][0]))
-        tags_str = []
-        for tag in tags:
-            tags_str.append(db.select("tags", "name", "id='{}'".format(tag[0]))[0][0])
-
-        quote = [
-            (
-                quote[0][0],
-                quote[0][1],
-                unicode(Markup.escape(quote[0][2])).replace('\n', '</br>'),
-                tags_str
-            )
-        ]
         return render_template(
             "latest.html",
             appname=conf.config['APPNAME'],
             appbrand=conf.config['APPBRAND'],
-            title="Latest",
-            quotes=quote
+            title="Quote #{}".format(quote.id),
+            quotes=[quote,]
         )
 
 

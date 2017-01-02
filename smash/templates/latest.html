@@ -3,17 +3,17 @@
 
 {% if quotes  %}
 {% for quote in quotes %}
-<a class="quote-link" href="quote/{{ quote[0] }}">#{{ quote[0] }}</a>
-<a class="rate-positive">+</a> ({{quote[1]}}) <a class="rate-negative">-</a></br>
+<a class="quote-link" href="quote/{{ quote[0] }}">#{{ quote.id }}</a>
+<a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a></br>
 <div class="quote">
-    <p>{{ quote[2]|safe }}</p>
+    <p>{{ quote.content|safe }}</p>
 </div>
 
 <div class="tags">
 
     Tags:
-    {% for tag in quote[3] %}
-    <a href="tag/{{tag}}" class="badge"> {{tag}} </a>
+    {% for tag in quote.tags %}
+    <a href="tag/{{tag}}" class="badge"> {{tag.name}} </a>
     {% endfor %}
 
 </div>
