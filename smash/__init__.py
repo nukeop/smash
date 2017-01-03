@@ -1,6 +1,6 @@
 import os
 from flask import Flask, g
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from . import config, log
 
 

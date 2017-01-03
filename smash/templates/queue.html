@@ -4,18 +4,20 @@
 {% if quotes  %}
 {% for quote in quotes %}
 <a class="quote-link" href="quote/{{ quote.id }}">#{{ quote.id }}</a>
-<a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a></br>
-<div class="quote">
-    <p>{{ quote.content|safe }}</p>
-</div>
+<a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a>
 
 <form action="/moderate" name="moderate" method="post">
   <div class="btn-group" role="group">
     <input type="hidden" name="quoteid" value={{quote.id}} />
-    <button type="submit" name="submit" class="btn btn-success btn-sm" value="Approve">Approve</button>
-    <button type="submit" name="submit" class="btn btn-danger btn-sm" value="Delete">Delete</button>
+    <button type="submit" name="submit" class="btn btn-success btn-sm btn-mod" value="Approve">Approve</button>
+    <button type="submit" name="submit" class="btn btn-danger btn-sm btn-mod" value="Delete">Delete</button>
   </div>
 </form>
+
+<div class="quote">
+    <p>{{ quote.content|safe }}</p>
+</div>
+
 
 <div class="tags">
 

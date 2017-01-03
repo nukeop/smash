@@ -13,6 +13,14 @@ def timestamp():
     return datetime.datetime.now().strftime("%H:%M:%S %d/%m/%y")
 
 
+def message(level, msg):
+    return render_template(
+        "message.html",
+        alertclass=level,
+        message=msg
+    )
+
+
 @app.before_request
 def before_request():
     g.appname = conf.config['APPNAME']
@@ -62,21 +70,13 @@ def latest():
             quotes=quotes
         )
     else:
-        return render_template(
-            "message.html",
-            alertclass="alert-warning",
-            message="No quotes in the database. "
-        )
+        return message("alert-warning", "No quotes in the database.")
 
 
 @app.route('/queue')
 def queue():
     if not session.get('authorized'):
-        return render_template(
-            "message.html",
-            alertclass="alert-danger",
-            message="You are not authorized to view this page."
-        )
+        return message("alert-danger", "You are not authorized to view this page.")
 
     quotes = Quote.query.filter_by(approved=False).order_by(Quote.id).all()
 
@@ -91,43 +91,27 @@ def queue():
             quotes=quotes
         )
     else:
-        return render_template(
-            "message.html",
-            alertclass="alert-warning",
-            message="No quotes in the database. "
-        )
+        return message("alert-warning", "No quotes in the database.")
 
 
 @app.route('/moderate', methods=['POST'])
 def moderate():
     if not session.get('authorized'):
-        return render_template(
-            "message.html",
-            alertclass="alert-danger",
-            message="You are not authorized to perform this action."
-        )
-
+        return message("alert-danger", "You are not authorized to perform this action.")
 
     if request.form['submit'] == "Approve":
         quote = Quote.query.filter_by(id=request.form['quoteid']).first()
         quote.approved = True
         db.session.commit()
 
-        return render_template(
-            "message.html",
-            alertclass="alert-success",
-            message="Quote approved."
-        )
+        return message("alert-success", "Quote approved.")
+
     elif request.form['submit'] == "Delete":
         quote = Quote.query.filter_by(id=request.form['quoteid']).first()
         db.session.delete(quote)
         db.session.commit()
 
-        return render_template(
-            "message.html",
-            alertclass="alert-success",
-            message="Quote deleted."
-        )
+        return message("alert-success", "Quote deleted.")
 
     abort(501)
 

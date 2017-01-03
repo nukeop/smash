@@ -96,12 +96,24 @@ html, body {
 }
 
 .quote-link {
-  color: #03A9F4;
+  color: #424242;
   font-weight: bold;
+  padding-left: 8px;
 }
 
 .quote {
   font-family: 'Inconsolata', monospace;
+}
+
+.quote-header {
+  background-color: #b3e5fc;
+  border-bottom: 1px solid;
+  border-color: #4fc3f7;
+  margin-bottom: 2px;
+}
+
+.quote-date {
+  padding-right: 8px;
 }
 
 .rate-positive {
@@ -133,4 +145,9 @@ html, body {
 
 .badge {
     background-color: #03A9F4;
+}
+
+.btn-mod {
+  padding: 2px 8px;
+  border-radius: 0px;
 }
