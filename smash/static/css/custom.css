@@ -147,7 +147,13 @@ html, body {
     background-color: #03A9F4;
 }
 
+.mod-form {
+  padding-left: 8px;
+  display: inline;
+}
+
 .btn-mod {
-  padding: 2px 8px;
+  padding: 0px 4px;
   border-radius: 0px;
+  display: inline;
 }

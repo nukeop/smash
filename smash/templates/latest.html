@@ -7,16 +7,15 @@
   <a class="quote-link" href="quote/{{ quote.id }}">#{{ quote.id }}</a>
   <a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a>
   <div class="pull-right quote-date">{{ quote.time }}</div>
-</div>
 
-{% if session.authorized %}
-<form action="/moderate" name="moderate" method="post">
-  <div class="btn-group" role="group">
+  {% if session.authorized %}
+  <form class="mod-form" action="/moderate" name="moderate" method="post">
     <input type="hidden" name="quoteid" value={{quote.id}} />
     <button type="submit" name="submit" class="btn btn-danger btn-sm btn-mod" value="Delete">Delete</button>
-  </div>
-</form>
-{% endif %}
+  </form>
+  {% endif %}
+</div>
+
 
 <div class="quote">
     <p>{{ quote.content|safe }}</p>
