@@ -129,7 +129,7 @@ def moderate():
             message="Quote deleted."
         )
 
-    return str(request.form)
+    abort(501)
 
 
 @app.route('/quote/<int:id>')
