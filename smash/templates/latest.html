@@ -26,7 +26,7 @@
     Tags:
     {% if quote.tags|length > 0 and quote.tags[0].name|length>0%}
       {% for tag in quote.tags %}
-      <a href="tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
+      <a href="/tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
       {% endfor %}
     {% else %}
       <strong> No tags </strong>

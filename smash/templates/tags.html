@@ -2,7 +2,7 @@
 {% block content %}
 
 {% for tag in tags %}
-  <a class="badge">{{tag.name}}</a><br />
+  <a class="badge" href="/tag/{{tag}}">{{tag}}</a><br />
 {% endfor %}
 
 {% endblock %}

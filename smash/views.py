@@ -135,10 +135,29 @@ def quote(id):
         )
 
 
+@app.route('/tag/<tagname>')
+def tag(tagname):
+    tag = Tag.query.filter_by(name=tagname).first()
+
+    if len(list(tag.quotes))>0:
+        # Replace line breaks with html breaks and escape special characters
+        for quote in tag.quotes:
+            quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
+
+        return render_template(
+            "latest.html",
+            title="Latest",
+            quotes=tag.quotes
+        )
+    else:
+        return message("alert-warning", "No quotes with this tag.")
+
+
 @app.route('/tags')
 def tags():
-    tags = Tag.query.order_by(Tag.name).all()
-
+    tags = Tag.query.order_by(Tag.name).distinct().all()
+    tags = list(set([x.name for x in tags]))
+    
     return render_template(
         "tags.html",
         title="Tags",
