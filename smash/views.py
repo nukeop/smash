@@ -157,7 +157,7 @@ def tag(tagname):
 def tags():
     tags = Tag.query.order_by(Tag.name).distinct().all()
     tags = list(set([x.name for x in tags]))
-    
+
     return render_template(
         "tags.html",
         title="Tags",
@@ -187,7 +187,16 @@ def add_new():
             quote = Quote(quote_body, request.remote_addr, timestamp())
             quote_tags = [Tag(tag) for tag in quote_tags]
 
-            quote.tags.extend(quote_tags)
+            for tag in quote_tags:
+                dbtag = Tag.query.filter_by(name=tag.name).first()
+                print(dbtag)
+                print(dbtag.name)
+                print(dbtag.id)
+                if dbtag is not None:
+                    quote.tags.append(dbtag)
+                else:
+                    quote.tags.append(tag)
+            #quote.tags.extend(quote_tags)
 
             db.session.add(quote)
             db.session.commit()
