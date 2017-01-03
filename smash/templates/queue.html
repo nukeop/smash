@@ -9,6 +9,14 @@
     <p>{{ quote.content|safe }}</p>
 </div>
 
+<form action="/moderate" name="moderate" method="post">
+  <div class="btn-group" role="group">
+    <input type="hidden" name="quoteid" value={{quote.id}} />
+    <button type="submit" name="submit" class="btn btn-success btn-sm" value="Approve">Approve</button>
+    <button type="submit" name="submit" class="btn btn-danger btn-sm" value="Delete">Delete</button>
+  </div>
+</form>
+
 <div class="tags">
 
     Tags:

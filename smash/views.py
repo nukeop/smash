@@ -71,6 +71,13 @@ def latest():
 
 @app.route('/queue')
 def queue():
+    if not session.get('authorized'):
+        return render_template(
+            "message.html",
+            alertclass="alert-danger",
+            message="You are not authorized to view this page."
+        )
+
     quotes = Quote.query.filter_by(approved=False).order_by(Quote.id).all()
 
     if len(quotes)>0:
@@ -89,6 +96,40 @@ def queue():
             alertclass="alert-warning",
             message="No quotes in the database. "
         )
+
+
+@app.route('/moderate', methods=['POST'])
+def moderate():
+    if not session.get('authorized'):
+        return render_template(
+            "message.html",
+            alertclass="alert-danger",
+            message="You are not authorized to perform this action."
+        )
+
+
+    if request.form['submit'] == "Approve":
+        quote = Quote.query.filter_by(id=request.form['quoteid']).first()
+        quote.approved = True
+        db.session.commit()
+
+        return render_template(
+            "message.html",
+            alertclass="alert-success",
+            message="Quote approved."
+        )
+    elif request.form['submit'] == "Delete":
+        quote = Quote.query.filter_by(id=request.form['quoteid']).first()
+        db.session.delete(quote)
+        db.session.commit()
+
+        return render_template(
+            "message.html",
+            alertclass="alert-success",
+            message="Quote deleted."
+        )
+
+    return str(request.form)
 
 
 @app.route('/quote/<int:id>')

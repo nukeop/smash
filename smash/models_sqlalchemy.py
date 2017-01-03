@@ -13,10 +13,10 @@ class Quote(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer)
-    content = db.Column(db.String())
+    content = db.Column(db.String(), nullable=False)
     approved = db.Column(db.Boolean)
-    author_ip = db.Column(db.String())
-    time = db.Column(db.String())
+    author_ip = db.Column(db.String(), nullable=False)
+    time = db.Column(db.String(), nullable=False)
     tags = db.relationship(
         'Tag',
         secondary=tags_to_quotes,
@@ -36,7 +36,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
+    name = db.Column(db.String(), unique=True, nullable=False)
 
 
     def __init__(self, name):
