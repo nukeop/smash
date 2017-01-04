@@ -189,9 +189,6 @@ def add_new():
 
             for tag in quote_tags:
                 dbtag = Tag.query.filter_by(name=tag.name).first()
-                print(dbtag)
-                print(dbtag.name)
-                print(dbtag.id)
                 if dbtag is not None:
                     quote.tags.append(dbtag)
                 else:
