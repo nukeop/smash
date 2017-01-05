@@ -4,7 +4,7 @@
 {% if quotes  %}
 {% for quote in quotes %}
 <div class="quote-header">
-  <a class="quote-link" href="quote/{{ quote.id }}">#{{ quote.id }}</a>
+  <a class="quote-link" href="/quote/{{ quote.id }}">#{{ quote.id }}</a>
   <a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a>
   <div class="pull-right quote-date">{{ quote.time }}</div>
 
@@ -25,7 +25,7 @@
 
     Tags:
     {% for tag in quote.tags %}
-    <a href="tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
+    <a href="/tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
     {% endfor %}
 
 </div>
