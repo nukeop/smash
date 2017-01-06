@@ -17,7 +17,8 @@ def message(level, msg):
     return render_template(
         "message.html",
         alertclass=level,
-        message=msg
+        message=msg,
+        title="Message"
     )
 
 
@@ -88,7 +89,7 @@ def latest_page(page):
 
     return render_template(
         "latest.html",
-        title="Latest",
+        title="Latest - page {}".format(page),
         quotes=quotes,
         numpages=1 + allquotes//10,
         curpage=page-1,
@@ -162,17 +163,44 @@ def tag(tagname):
     tag = Tag.query.filter_by(name=tagname).first()
 
     if len(list(tag.quotes))>0:
+        allquotes = len(list(tag.quotes))
+        tag.quotes = tag.quotes[:10]
+
         # Replace line breaks with html breaks and escape special characters
         for quote in tag.quotes:
             quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
 
         return render_template(
             "latest.html",
-            title="Latest",
-            quotes=tag.quotes
+            title="Tag - {}".format(tagname),
+            quotes=tag.quotes,
+            numpages=1 + allquotes//10,
+            curpage=0,
+            page_type="tag/{}".format(tagname)
         )
     else:
         return message("alert-warning", "No quotes with this tag.")
+
+
+@app.route('/tag/<tagname>/<int:page>')
+def tag_page(tagname, page):
+    tag = Tag.query.filter_by(name=tagname).first()
+
+    if len(list(tag.quotes))>0:
+        allquotes = len(list(tag.quotes))
+        tag.quotes = tag.quotes[(page-1)*10:page*10]
+
+        for quote in tag.quotes:
+            quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
+
+        return render_template(
+            "latest.html",
+            title="Tag - {} - page {}".format(tagname, page),
+            quotes=tag.quotes,
+            numpages=1 + allquotes//10,
+            curpage=0,
+            page_type="tag/{}".format(tagname)
+        )
 
 
 @app.route('/tags')
