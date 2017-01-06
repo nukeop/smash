@@ -58,6 +58,8 @@ def login_page():
 @app.route('/latest')
 def latest():
     quotes = Quote.query.filter_by(approved=True).order_by(Quote.id.desc()).all()
+    allquotes = len(quotes)
+    quotes = quotes[:10]
 
     if len(quotes)>0:
         # Replace line breaks with html breaks and escape special characters
@@ -67,11 +69,31 @@ def latest():
         return render_template(
             "latest.html",
             title="Latest",
-            quotes=quotes
+            quotes=quotes,
+            numpages=1 + allquotes//10,
+            curpage=0,
+            page_type="latest"
         )
     else:
         return message("alert-warning", "No quotes in the database.")
 
+
+@app.route('/latest/<int:page>')
+def latest_page(page):
+    allquotes = len(Quote.query.filter_by(approved=True).order_by(Quote.id.desc()).all())
+    quotes = Quote.query.filter_by(approved=True).order_by(Quote.id.desc()).all()[(page-1)*10:page*10]
+
+    for quote in quotes:
+        quote.content = str(Markup.escape(quote.content)).replace('\n', '</br>')
+
+    return render_template(
+        "latest.html",
+        title="Latest",
+        quotes=quotes,
+        numpages=1 + allquotes//10,
+        curpage=page-1,
+        page_type="latest"
+    )
 
 @app.route('/queue')
 def queue():

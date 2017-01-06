@@ -1,4 +1,4 @@
-html, body {
+9 html, body {
   font-family: 'Montserrat';
   margin: 0;
   padding: 0;
@@ -156,4 +156,18 @@ html, body {
   padding: 0px 4px;
   border-radius: 0px;
   display: inline;
+}
+
+.pagination {
+  margin: 0px;
+  margin-bottom: 8px;
+}
+
+.pagination>li>a {
+  color: #03A9F4;
+}
+
+.pagination>.active>a {
+  background-color: #03A9F4;
+  border-color: #03A9F4;
 }
