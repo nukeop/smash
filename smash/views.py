@@ -30,7 +30,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    welcome = "<p>Welcome to the quote archive.</p>"
+    welcome = conf.config['MOTD']
     news = ("<p><b>{}</b></p><h4>{} running on smash quote database"
             " engine launched today</h4>").format(
                 datetime.datetime.now().strftime("%d/%m/%y"),
@@ -154,7 +154,10 @@ def quote(id):
         return render_template(
             "latest.html",
             title="Quote #{}".format(quote.id),
-            quotes=[quote,]
+            quotes=[quote,],
+            numpages=1,
+            curpage=0,
+            page_type="quote"
         )
 
 
