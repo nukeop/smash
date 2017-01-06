@@ -3,5 +3,6 @@
     "APPNAME": "",
     "DBNAME": "smash.db",
     "SECRETKEY": "",
-    "ADMINSECRET": ""
+    "ADMINSECRET": "",
+    "MOTD": "Welcome to the quote archive."
 }
