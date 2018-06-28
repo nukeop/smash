@@ -258,7 +258,19 @@ def add_new():
             )
 
         elif request.form['submit'] == "Preview":
-            return str(request.form)
+            preview = Quote(request.form['newquote'], request.remote_addr, timestamp())
+            preview_tags = request.form["tags"].split(',')
+            preview.approved = True
+            preview.tags = [Tag(tag) for tag in preview_tags]
+            
+            return render_template(
+                "latest.html",
+                title="Quote preview",
+                quotes=[preview,],
+                numpages=1,
+                curpage=0,
+                page_type="quote"
+            )
         else:
             abort(501)
 

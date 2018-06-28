@@ -17,11 +17,13 @@
   {% for quote in quotes %}
     {% if quote.approved %}
     <div class="quote-header">
+      {% if quote.id %}
       <a class="quote-link" href="/quote/{{ quote.id }}">#{{ quote.id }}</a>
+      {% endif %}
       <a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a>
       <div class="pull-right quote-date">{{ quote.time }}</div>
 
-      {% if session.authorized %}
+      {% if session.authorized and quote.id %}
       <form class="mod-form" action="/moderate" name="moderate" method="post">
         <input type="hidden" name="quoteid" value={{quote.id}} />
         <button type="submit" name="submit" class="btn btn-danger btn-sm btn-mod" value="Delete">Delete</button>
