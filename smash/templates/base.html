@@ -30,9 +30,10 @@
           <li> <a href="/latest">Latest</a> </li>
           <li> <a href="/tags">Tags</a> </li>
           <li> <a href="/add">Add new</a> </li>
-          <li> <a href="/login">Log in</a> </li>
           {% if session.authorized %}
           <li> <a href="/queue">Queue</a> </li>
+          {% else %}
+          <li> <a href="/login">Log in</a> </li>
           {% endif %}
         </ul>
 
