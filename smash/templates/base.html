@@ -38,9 +38,9 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-              <form action="/search" method="post" class="navbar-form navbar-left" role="search">
+              <form onSubmit="location.href='/search/' + this.search.value;return false" class="navbar-form navbar-left" role="search">
                   <div class="form-group">
-                      <input type="search" class="form-control" placeholder="Search">
+                      <input id="search" type="search" class="form-control" placeholder="Search">
                   </div>
               </form>
             </li>
