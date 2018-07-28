@@ -131,6 +131,10 @@ def moderate():
 
     elif request.form['submit'] == "Delete":
         quote = Quote.query.filter_by(id=request.form['quoteid']).first()
+        # Delete dangling tags (alive only with current Quote)
+        dangling_tags = [tag for tag in quote.tags if tag.quotes.count() == 1]
+        for tag in dangling_tags:
+            db.session.delete(tag)
         db.session.delete(quote)
         db.session.commit()
 
