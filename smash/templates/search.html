@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% if numpages>1 %}
+<ul class="pagination pagination-sm">
+  {% for page in range(numpages) %}
+  <li {% if curpage==page %} class="active" {% endif %} >
+    <a {% if curpage!=page %}href="/{{page_type}}/{{search_query}}/{{page+1}}"{% endif %}>{{page+1}}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if quotes  %}
+  {% for quote in quotes %}
+    {% if quote.approved %}
+    <div class="quote-header">
+      <a class="quote-link" href="/quote/{{ quote.id }}">#{{ quote.id }}</a>
+      <a class="rate-positive">+</a> ({{quote.rating}}) <a class="rate-negative">-</a>
+      <div class="pull-right quote-date">{{ quote.time }}</div>
+
+      {% if session.authorized %}
+      <form class="mod-form" action="/moderate" name="moderate" method="post">
+        <input type="hidden" name="quoteid" value={{quote.id}} />
+        <button type="submit" name="submit" class="btn btn-danger btn-sm btn-mod" value="Delete">Delete</button>
+      </form>
+      {% endif %}
+    </div>
+
+
+    <div class="quote">
+        <p>{{ quote.content|safe }}</p>
+    </div>
+
+    <div class="tags">
+
+        Tags:
+        {% if quote.tags|length > 0 and quote.tags[0].name|length>0%}
+          {% for tag in quote.tags %}
+          <a href="/tag/{{tag.name}}" class="badge"> {{tag.name}} </a>
+          {% endfor %}
+        {% else %}
+          <strong> No tags </strong>
+        {% endif %}
+
+    </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% endblock %}
